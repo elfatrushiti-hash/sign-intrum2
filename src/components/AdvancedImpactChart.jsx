@@ -25,7 +25,7 @@ export default function AdvancedImpactChart({ data }) {
   return (
     <div className="bg-white p-6 rounded-lg shadow">
       <h3 className="text-lg font-bold mb-4">Kostenentwicklung</h3>
-      <Line data={chartData}/>
+      <Line id="chart-advanced" data={chartData}/>
     </div>
   )
 }
