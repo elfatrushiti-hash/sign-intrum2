@@ -12,10 +12,7 @@ export default function CO2Chart({ data }) {
       {
         label: 'CO₂ kg',
         data: [data.co2Saved + 10, 10],
-        backgroundColor: [
-          '#7c3aed',
-          '#10b981'
-        ]
+        backgroundColor: ['#7c3aed', '#10b981']
       }
     ]
   }
@@ -25,7 +22,7 @@ export default function CO2Chart({ data }) {
       <h3 className="text-lg font-bold mb-4">
         CO₂ Impact Vergleich
       </h3>
-      <Bar data={chartData}/>
+      <Bar id="chart-co2" data={chartData} />
     </div>
   )
 }
