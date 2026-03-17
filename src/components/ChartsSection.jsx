@@ -20,7 +20,7 @@ export default function ChartsSection({ data }) {
   return (
     <div className="bg-white p-6 rounded-lg shadow text-center">
       <h3 className="text-lg font-bold mb-4 text-[#8750E5]">Kostenvergleich</h3>
-      <Doughnut data={chartData}/>
+      <Doughnut id="chart-doughnut" data={chartData} />
     </div>
   )
 }
