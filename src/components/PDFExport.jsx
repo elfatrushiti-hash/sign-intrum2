@@ -1,30 +1,44 @@
-import React from "react"
-import jsPDF from "jspdf"
-import html2canvas from "html2canvas"
+import React, { useRef } from "react"
+import ReportHeader from "./ReportHeader"
+import ChartsSection from "./ChartsSection"
+import CO2Chart from "./CO2Chart"
+import KPISection from "./KPISection"
 
 export default function PDFExport({ data }) {
-  const exportToPDF = async () => {
-    const input = document.getElementById("dashboard")
-    const pdf = new jsPDF("p", "mm", "a4")
+  const printRef = useRef()
 
-    const canvas = await html2canvas(input, { scale: 2, useCORS: true })
-    const imgData = canvas.toDataURL("image/png")
+  const handlePrint = () => {
+    const printContents = printRef.current.innerHTML
+    const originalContents = document.body.innerHTML
 
-    const logo = new Image()
-    logo.src = "/intrum-logo.png"
-    logo.onload = () => {
-      pdf.addImage(logo, "PNG", 160, 10, 40, 15)
-      pdf.addImage(imgData, "PNG", 10, 30, 190, (canvas.height * 190) / canvas.width)
-      pdf.save("SIGN_Impact_Report.pdf")
-    }
+    document.body.innerHTML = printContents
+    window.print()
+    document.body.innerHTML = originalContents
+    window.location.reload() // Refresh, um React wieder korrekt zu rendern
   }
 
   return (
-    <button
-      onClick={exportToPDF}
-      className="bg-[#8750E5] text-white px-6 py-2 rounded hover:bg-[#4F1D8D] transition"
-    >
-      PDF herunterladen
-    </button>
+    <>
+      <button
+        onClick={handlePrint}
+        className="bg-bgPurple40 text-white px-4 py-2 rounded shadow hover:opacity-90"
+      >
+        PDF Report herunterladen
+      </button>
+
+      {/* Verstecktes PDF Layout */}
+      <div ref={printRef} className="hidden">
+        <div className="bg-white p-6 text-black min-h-screen">
+          <ReportHeader />
+          
+          <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <KPISection data={data} />
+            <ChartsSection data={data} />
+            <CO2Chart data={data} />
+          </section>
+
+        </div>
+      </div>
+    </>
   )
 }
