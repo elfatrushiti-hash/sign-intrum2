@@ -4,16 +4,17 @@ import jsPDF from "jspdf"
 export default function PDFExport({ data }) {
   const exportPDF = () => {
     const doc = new jsPDF({ orientation: "portrait", unit: "px", format: "a4" })
-
     const date = new Date().toLocaleDateString()
+
     doc.setFontSize(20)
     doc.setTextColor(41, 7, 74)
     doc.text("SIGN Impact Report", 40, 40)
+
     doc.setFontSize(12)
     doc.setTextColor(100)
     doc.text(`Generated on ${date}`, 40, 60)
 
-    // Charts automatisch übernehmen (Canvas IDs müssen gesetzt werden)
+    // Charts erfassen
     const chartIds = ["chart-doughnut", "chart-co2", "chart-advanced"]
     let yPos = 100
     chartIds.forEach(id => {
