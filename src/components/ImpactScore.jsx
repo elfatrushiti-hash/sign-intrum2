@@ -3,18 +3,29 @@ import React, { useState, useEffect } from "react"
 export default function ImpactScore({ data }) {
   const [animatedScore, setAnimatedScore] = useState(0)
 
-  // Realistische Maximalwerte für die Berechnung
-  const MAX_TIME = 500      // maximale Stunden, die gespart werden können
-  const MAX_MONEY = 5000    // maximale CHF Ersparnis
-  const MAX_CO2 = 1000      // maximale CO2-Einsparung in kg
-
-  // Berechnung des SIGN Impact Scores
+  // Dynamische Berechnung des Scores basierend auf Input
   const calculateSignImpactScore = (impactData) => {
-    const timePercent = Math.min((impactData.timeSaved / MAX_TIME) * 100, 100)
-    const moneyPercent = Math.min((impactData.moneySaved / MAX_MONEY) * 100, 100)
-    const co2Percent = Math.min((impactData.co2Saved / MAX_CO2) * 100, 100)
+    const { docs, signs, totalHand, totalDigital, timeSaved, co2Saved } = impactData
 
-    return Math.round((timePercent + moneyPercent + co2Percent) / 3)
+    // Maximal mögliche Einsparungen basierend auf Eingaben
+    // Handgeschrieben pro Doc & Sign
+    const HAND_COST_PER_DOC_SIGN = 76.02
+    const DIGITAL_COST_PER_DOC_SIGN = 11.24
+    const MAX_COST_SAVINGS = docs * signs * (HAND_COST_PER_DOC_SIGN - DIGITAL_COST_PER_DOC_SIGN)
+
+    const WORK_HOURS_HAND = 0.5
+    const WORK_HOURS_DIGITAL = 0.05
+    const MAX_TIME_SAVED = docs * signs * (WORK_HOURS_HAND - WORK_HOURS_DIGITAL)
+
+    const CO2_PER_DOC_SIGN = 0.5
+    const MAX_CO2_SAVED = docs * signs * CO2_PER_DOC_SIGN
+
+    const costScore = MAX_COST_SAVINGS > 0 ? Math.min((totalHand - totalDigital) / MAX_COST_SAVINGS * 100, 100) : 0
+    const timeScore = MAX_TIME_SAVED > 0 ? Math.min(timeSaved / MAX_TIME_SAVED * 100, 100) : 0
+    const co2Score = MAX_CO2_SAVED > 0 ? Math.min(co2Saved / MAX_CO2_SAVED * 100, 100) : 0
+
+    // Durchschnitt aller drei Komponenten
+    return Math.round((costScore + timeScore + co2Score) / 3)
   }
 
   const score = calculateSignImpactScore(data)
@@ -24,16 +35,16 @@ export default function ImpactScore({ data }) {
     let start = 0
     const end = score
     if (start === end) return
-    let stepTime = Math.abs(Math.floor(1000 / (end || 1)))
-    let timer = setInterval(() => {
+    const stepTime = Math.max(Math.floor(1000 / (end || 1)), 10)
+    const timer = setInterval(() => {
       start += 1
       setAnimatedScore(start)
-      if (start === end) clearInterval(timer)
+      if (start >= end) clearInterval(timer)
     }, stepTime)
     return () => clearInterval(timer)
   }, [score])
 
-  // Farbskala je nach Score
+  // Farbe je nach Score
   const getColor = () => {
     if (score >= 70) return "bg-[#03A4AD]"
     if (score >= 40) return "bg-[#2395FF]"
@@ -41,7 +52,7 @@ export default function ImpactScore({ data }) {
   }
 
   return (
-    <div className={`p-6 rounded-lg shadow text-black text-center bg-bgPurple40`}>
+    <div className={`p-6 rounded-lg shadow text-black text-center ${getColor()}`}>
       <p className="text-sm mb-2 font-medium">SIGN Impact Score</p>
       <p className="text-4xl font-bold">{animatedScore} / 100</p>
       <p className="text-sm mt-2">zeigt den Gesamteffekt von Zeit-, Kosten- und CO₂-Einsparungen</p>
