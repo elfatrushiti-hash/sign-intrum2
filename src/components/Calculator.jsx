@@ -31,7 +31,7 @@ export default function Calculator({ impactData, setImpactData }) {
         Was kann ich mit SIGN sparen?
       </h2>
       <p className="mb-4 text-sm text-black text-center">
-        Bitte geben Sie die Anzahl Dokumente, Signaturen und Seiten ein:
+        Bitte geben Sie die Anzahl Dokumente, Signaturen und Seiten ein (monatlich):
       </p>
       <div className="flex flex-col gap-4 w-48">
         <div className="flex flex-col items-center">
