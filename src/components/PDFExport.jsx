@@ -30,7 +30,7 @@ export default function PDFExport({ data }) {
     // Titel oben
     pdf.setFontSize(22)
     pdf.setTextColor("#29074A")
-    pdf.text("SIGN Impact Report", pdf.internal.pageSize.getWidth() / 2, 15, { align: "center" })
+    pdf.text("SIGN Impact Report", pdf.internal.pageSize.getWidth() / 2, 15, { align: "left" })
 
     // Bildinhalt darunter einfügen (mit Margin)
     pdf.addImage(imgData, "PNG", margin, 20, pdfWidth, pdfHeight)
@@ -40,7 +40,7 @@ export default function PDFExport({ data }) {
     pdf.setFontSize(10)
     pdf.setTextColor("#555555")
     const footerText = `Generated on ${date} • by SIGN Intrum`
-    pdf.text(footerText, pdf.internal.pageSize.getWidth() / 2, pdf.internal.pageSize.getHeight() - 10, { align: "center" })
+    pdf.text(footerText, pdf.internal.pageSize.getWidth() / 2, pdf.internal.pageSize.getHeight() - 10, { align: "left" })
 
     pdf.save("sign-impact-report.pdf")
   }
