@@ -12,7 +12,7 @@ export default function ImpactScore({ data }) {
   const calculateScore = () => {
     const { docs = 1, signs = 1, pages = 1, totalHand, totalDigital, timeSaved, co2Saved } = data
 
-    const maxCostSavings = (COST_HAND - COST_DIGITAL) * docs * signs * pages
+    const maxCostSavings = (COST_HAND - COST_DIGITAL) * docs * signs
     const costScore = maxCostSavings > 0 ? ((totalHand - totalDigital) / maxCostSavings) * 100 : 0
 
     const maxTimeSaved = (TIME_HAND - TIME_DIGITAL) * docs * signs * pages
