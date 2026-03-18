@@ -35,9 +35,11 @@ export default function PDFExport({ data }) {
     pdf.setTextColor("#29074A")
     pdf.text("SIGN Impact Report", pageWidth / 2, 15, { align: "center" })
 
-    // Zentriert auf der Seite
+    // Vertikale Zentrierung: Platz für Titel und Footer berücksichtigen
+    const availableHeight = pageHeight - 15 - 10 - 20 // title + footer + kleiner Puffer
+    const yPos = 15 + ((availableHeight - pdfHeight) / 2)
     const xPos = (pageWidth - pdfWidth) / 2
-    const yPos = (pageHeight - pdfHeight) / 2
+
     pdf.addImage(imgData, "PNG", xPos, yPos, pdfWidth, pdfHeight)
 
     // Footer mit Datum & Hinweis
