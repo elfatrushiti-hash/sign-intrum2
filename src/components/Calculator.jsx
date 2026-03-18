@@ -23,15 +23,15 @@ export default function Calculator({ impactData, setImpactData }) {
   }
 
   return (
-    <section className="flex flex-col h-full justify-start bg-bgGrey20 p-6 rounded-lg shadow">
+    <section className="flex flex-col justify-center items-center h-full bg-bgGrey20 p-6 rounded-lg shadow">
       <h2 className="text-lg font-bold mb-4 text-center text-primaryPurple">
         Was kann ich mit SIGN sparen?
       </h2>
-      <p className="mb-2 text-sm text-black text-center">
+      <p className="mb-4 text-sm text-black text-center">
         Bitte geben Sie die Anzahl Dokumente und Signaturen ein:
       </p>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <div className="flex flex-col">
+      <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <div className="flex flex-col items-center">
           <label htmlFor="docs" className="text-sm font-medium mb-1 text-black">Anzahl Dokumente</label>
           <input
             id="docs"
@@ -43,7 +43,7 @@ export default function Calculator({ impactData, setImpactData }) {
             placeholder="z.B. 10"
           />
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center">
           <label htmlFor="signs" className="text-sm font-medium mb-1 text-black">Signaturen pro Dokument</label>
           <input
             id="signs"
