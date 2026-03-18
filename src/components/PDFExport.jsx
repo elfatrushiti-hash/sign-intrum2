@@ -5,21 +5,30 @@ import html2canvas from "html2canvas"
 export default function PDFExport({ data }) {
 
   const exportPDF = async () => {
-    const element = document.getElementById("pdf-content")
-    if (!element) {
-      alert("PDF-Content nicht gefunden!")
-      return
-    }
+    const input = document.getElementById("pdf-content")
+    if (!input) return
 
-    // html2canvas: hoher Scale für bessere Auflösung
-    const canvas = await html2canvas(element, { scale: 2, useCORS: true })
+    // Mit html2canvas den Inhalt rendern
+    const canvas = await html2canvas(input, {
+      scale: 2,              // hohe Auflösung für Charts
+      useCORS: true,         // falls externe Bilder
+      scrollY: -window.scrollY,
+      backgroundColor: "#F1E8FA"
+    })
+
     const imgData = canvas.toDataURL("image/png")
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4"
+    })
 
-    const pdf = new jsPDF("p", "mm", "a4")
-    const pdfWidth = pdf.internal.pageSize.getWidth()
+    // Ränder festlegen
+    const margin = 10
+    const pdfWidth = pdf.internal.pageSize.getWidth() - margin * 2
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width
 
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight)
+    pdf.addImage(imgData, "PNG", margin, margin, pdfWidth, pdfHeight)
     pdf.save("sign-impact-report.pdf")
   }
 
